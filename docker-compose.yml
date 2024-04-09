@@ -21,9 +21,12 @@ services:
       - "traefik.http.routers.keycloak.tls=true"
       - "traefik.http.services.keycloak.loadbalancer.server.port=8080"
       - "traefik.http.services.keycloak.loadbalancer.server.scheme=http"
+    volumes:
+      - "./import:/opt/keycloak/data/import"
+      - "./themes:/opt/keycloak/themes"
     depends_on:
-      cert-helper:
-        condition: service_completed_successfully
+      db:
+        condition: service_started
   traefik:
     image: "traefik:v2.11.0"
     restart: unless-stopped
